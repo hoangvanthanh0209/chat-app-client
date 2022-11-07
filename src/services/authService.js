@@ -14,6 +14,21 @@ const register = async (userData) => {
     return res.data
 }
 
-const authService = { login, register }
+const getAllUsers = async (keyword, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        params: {
+            search: keyword,
+        },
+    }
+
+    const res = await axios.get(API, config)
+
+    return res.data
+}
+
+const authService = { login, register, getAllUsers }
 
 export default authService
