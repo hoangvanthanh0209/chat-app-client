@@ -14,6 +14,18 @@ const accessChat = async (userId, token) => {
     return res.data
 }
 
-const chatService = { accessChat }
+const fetchChats = async (token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+
+    const res = await axios.get(API, config)
+
+    return res.data
+}
+
+const chatService = { accessChat, fetchChats }
 
 export default chatService

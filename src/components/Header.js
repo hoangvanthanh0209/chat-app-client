@@ -91,9 +91,9 @@ function Header() {
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
-                bg="white"
-                w="100%"
-                p="5px 10px 5px 10px"
+                background="white"
+                width="100%"
+                padding="5px 10px 5px 10px"
                 borderWidth="5px"
                 borderRadius="8px"
             >
@@ -105,7 +105,7 @@ function Header() {
                 <Text fontSize="2xl">Chat App</Text>
                 <Box display="flex" gap="10px">
                     <Menu>
-                        <MenuButton as={Button} bg="white">
+                        <MenuButton as={Button} background="white">
                             <FaBell style={{ fontSize: '20px' }} />
                         </MenuButton>
                         <MenuList>
@@ -115,7 +115,7 @@ function Header() {
                         </MenuList>
                     </Menu>
                     <Menu>
-                        <MenuButton as={Button} rightIcon={<FaChevronDown />} bg="white">
+                        <MenuButton as={Button} rightIcon={<FaChevronDown />} background="white">
                             <Avatar size="sm" cursor="pointer" name={user.name} src={user.avatar} />
                         </MenuButton>
                         <MenuList>
@@ -138,7 +138,7 @@ function Header() {
                         <Box display="flex" mb="10px">
                             <Input
                                 placeholder="Search by name or email"
-                                mr={2}
+                                marginRight={2}
                                 value={search}
                                 onChange={(e) => {
                                     setSearch(e.target.value)
@@ -146,22 +146,9 @@ function Header() {
                             />
                             <Button onClick={handleSearch}>Go</Button>
                         </Box>
-                        {/* {loading ? (
-                            <ChatLoading />
-                        ) : (
-                            searchResult?.map((user) => (
-                                <UserListItem
-                                    key={user._id}
-                                    user={user}
-                                    handleFunction={() => {
-                                        accessChat(user._id)
-                                    }}
-                                />
-                            ))
-                        )} */}
                         {loadingChat ? (
                             <Box display="flex">
-                                <Spinner size="xs" w={10} h={10} alignSelf="center" margin="auto" />
+                                <Spinner size="xs" width={10} height={10} alignSelf="center" margin="auto" />
                             </Box>
                         ) : loading ? (
                             <ChatLoading />
