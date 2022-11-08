@@ -30,6 +30,7 @@ import UserListItem from './UserListItem'
 import authService from '../services/authService'
 import chatService from '../services/chatService'
 import { setChat } from '../redux/chatSlice'
+import ProfileModal from './ProfileModal'
 
 function Header() {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -118,7 +119,9 @@ function Header() {
                             <Avatar size="sm" cursor="pointer" name={user.name} src={user.avatar} />
                         </MenuButton>
                         <MenuList>
-                            <MenuItem>My profile</MenuItem>
+                            <ProfileModal user={user}>
+                                <MenuItem>My profile</MenuItem>
+                            </ProfileModal>
                             <MenuDivider />
                             <MenuItem>Log out</MenuItem>
                         </MenuList>
