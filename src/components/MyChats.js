@@ -6,10 +6,10 @@ import { authSelector, chatSelector } from '../redux/selector'
 import chatService from '../services/chatService'
 import GroupChatModal from './GroupChatModal'
 import { getSender } from '../utils/chatLogics'
-import { setChat } from '../redux/chatSlice'
+import { resetFetchAgainChat, setChat } from '../redux/chatSlice'
 
 function MyChats() {
-    const { chat } = useSelector(chatSelector)
+    const { chat, isFetchAgainChat } = useSelector(chatSelector)
     const { user } = useSelector(authSelector)
     const [chats, setChats] = useState([])
 
@@ -36,6 +36,10 @@ function MyChats() {
         fetchChats()
     }, [])
 
+    useEffect(() => {
+        isFetchAgainChat && fetchChats() && dispatch(resetFetchAgainChat())
+    }, [isFetchAgainChat])
+
     return (
         <Box
             display={{ base: chat ? 'none' : 'flex', md: 'flex' }}
@@ -59,7 +63,7 @@ function MyChats() {
             >
                 <Text>My chats</Text>
                 <GroupChatModal>
-                    <Button d="flex" fontSize={{ base: '17px', md: '10px', lg: '17px' }} leftIcon={<FaPlus />}>
+                    <Button d="flex" fontSize={{ base: '17px', md: '10px', lg: '17px' }} rightIcon={<FaPlus />}>
                         New Group Chat
                     </Button>
                 </GroupChatModal>
@@ -87,8 +91,11 @@ function MyChats() {
                             py={2}
                             borderRadius="lg"
                             key={chatItem._id}
+                            minHeight="58px"
                         >
-                            <Text>{chatItem.isGroupChat ? chatItem.chatName : getSender(user, chatItem.users)}</Text>
+                            <Text fontWeight={600}>
+                                {chatItem.isGroupChat ? chatItem.chatName : getSender(user, chatItem.users)}
+                            </Text>
                             {chatItem.latestMessage && (
                                 <Text fontSize="xs">
                                     <b>{chatItem.latestMessage.sender.name} : </b>

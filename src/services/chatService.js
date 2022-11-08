@@ -26,6 +26,18 @@ const fetchChats = async (token) => {
     return res.data
 }
 
-const chatService = { accessChat, fetchChats }
+const createGroupChat = async (groupChatData, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+
+    const res = await axios.post(API + 'group', groupChatData, config)
+
+    return res.data
+}
+
+const chatService = { accessChat, fetchChats, createGroupChat }
 
 export default chatService

@@ -98,6 +98,16 @@ function Login() {
             >
                 Login
             </Button>
+            <Button
+                w="100%"
+                style={{ marginTop: '10px' }}
+                onClick={() => {
+                    setEmail('thanhhv@gmail.com')
+                    setPassword('123456')
+                }}
+            >
+                Set
+            </Button>
         </VStack>
     )
 }
