@@ -8,7 +8,7 @@ function ChatBox() {
 
     return (
         <Box
-            display={{ base: chat ? 'flex' : 'none', md: 'flex' }}
+            display={{ base: Object.keys(chat).length ? 'flex' : 'none', md: 'flex' }}
             flexDir="column"
             alignItems="center"
             bg="white"

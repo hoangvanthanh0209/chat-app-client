@@ -38,6 +38,42 @@ const createGroupChat = async (groupChatData, token) => {
     return res.data
 }
 
-const chatService = { accessChat, fetchChats, createGroupChat }
+const renameGroup = async (groupChatData, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+
+    const res = await axios.put(API + 'rename', groupChatData, config)
+
+    return res.data
+}
+
+const addToGroup = async (groupChatData, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+
+    const res = await axios.put(API + 'groupadd', groupChatData, config)
+
+    return res.data
+}
+
+const removeFromGroup = async (groupChatData, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+
+    const res = await axios.put(API + 'groupremove', groupChatData, config)
+
+    return res.data
+}
+
+const chatService = { accessChat, fetchChats, createGroupChat, renameGroup, addToGroup, removeFromGroup }
 
 export default chatService

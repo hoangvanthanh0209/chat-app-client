@@ -29,7 +29,7 @@ import ChatLoading from './ChatLoading'
 import UserListItem from './UserListItem'
 import authService from '../services/authService'
 import chatService from '../services/chatService'
-import { setChat } from '../redux/chatSlice'
+import { fetchAgainChat, setChat } from '../redux/chatSlice'
 import ProfileModal from './ProfileModal'
 
 function Header() {
@@ -71,6 +71,7 @@ function Header() {
         try {
             const data = await chatService.accessChat(userId, user.token)
             dispatch(setChat(data))
+            dispatch(fetchAgainChat())
         } catch (error) {
             toast({
                 title: 'Error Occured!',

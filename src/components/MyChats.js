@@ -42,7 +42,7 @@ function MyChats() {
 
     return (
         <Box
-            display={{ base: chat ? 'none' : 'flex', md: 'flex' }}
+            display={{ base: Object.keys(chat).length ? 'none' : 'flex', md: 'flex' }}
             flexDir="column"
             alignItems="center"
             bg="white"
@@ -85,8 +85,8 @@ function MyChats() {
                                 dispatch(setChat(chatItem))
                             }}
                             cursor="pointer"
-                            bg={chat._id === chatItem._id ? '#38B2AC' : '#E8E8E8'}
-                            color={chat._id === chatItem._id ? 'white' : '#000'}
+                            bg={chat?._id === chatItem._id ? '#38B2AC' : '#E8E8E8'}
+                            color={chat?._id === chatItem._id ? 'white' : '#000'}
                             px={3}
                             py={2}
                             borderRadius="lg"
