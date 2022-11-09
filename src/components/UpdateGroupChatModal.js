@@ -69,11 +69,14 @@ function UpdateGroupChatModal() {
             })
             return
         }
+
         const chatData = {
             chatId: chat._id,
             chatName: groupChatName,
         }
         dispatch(renameGroup(chatData))
+
+        setGroupChatName('')
         dispatch(fetchAgainChat())
     }
 
@@ -118,7 +121,7 @@ function UpdateGroupChatModal() {
                 position: 'bottom',
             })
         dispatch(resetChat())
-    }, [isErrorChat, messageChat])
+    }, [isErrorChat, messageChat, isSuccessChat])
 
     return (
         <>
@@ -143,6 +146,7 @@ function UpdateGroupChatModal() {
                         ))}
                         <FormControl display="flex" my={3}>
                             <Input
+                                value={groupChatName}
                                 placeholder="Chat name"
                                 onChange={(e) => {
                                     setGroupChatName(e.target.value)
