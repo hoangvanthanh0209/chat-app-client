@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage' // defaults to localStorage for 
 
 import authSlice from './authSlice'
 import chatSlice from './chatSlice'
+import messageSlice from './messageSlice'
 
 const persistConfig = {
     key: 'root',
@@ -14,6 +15,7 @@ const persistConfig = {
 const reducer = combineReducers({
     auth: authSlice,
     chat: chatSlice,
+    message: messageSlice,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer)
