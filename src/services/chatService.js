@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-const API = 'http://localhost:5001/api/chat/'
+// const API = 'http://localhost:5001/api/chat/'
+// const API = 'https://chat-app-hvt.herokuapp.com/api/chat/'
+const API = 'https://chat-app-server-thv.up.railway.app/api/chat/'
 
 const accessChat = async (userId, token) => {
     const config = {

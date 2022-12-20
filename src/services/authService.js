@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-const API = 'http://localhost:5001/api/user/'
+// const API = 'http://localhost:5001/api/user/'
+// const API = 'https://chat-app-hvt.herokuapp.com/api/user/'
+const API = 'https://chat-app-server-thv.up.railway.app/api/user/'
 
 const login = async (userData) => {
     const res = await axios.post(API + 'login', userData)

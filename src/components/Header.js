@@ -24,13 +24,17 @@ import {
 import { useRef, useState } from 'react'
 import { FaSearch, FaChevronDown, FaBell } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
-import { authSelector } from '../redux/selector'
+import { authSelector, notificationSelector } from '../redux/selector'
 import ChatLoading from './ChatLoading'
 import UserListItem from './UserListItem'
 import authService from '../services/authService'
 import chatService from '../services/chatService'
 import { fetchAgainChat, setChat } from '../redux/chatSlice'
 import ProfileModal from './ProfileModal'
+import { logout } from '../redux/authSlice'
+import { useNavigate } from 'react-router-dom'
+import { addNotification } from '../redux/notificationSlice'
+import { getSender } from '../utils/chatLogics'
 
 function Header() {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -41,10 +45,12 @@ function Header() {
     const [searchResult, setSearchResult] = useState([])
 
     const { user } = useSelector(authSelector)
+    const { notification } = useSelector(notificationSelector)
 
     const btnRef = useRef()
     const toast = useToast()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const handleSearch = async () => {
         setLoading(true)
@@ -86,6 +92,11 @@ function Header() {
         onClose()
     }
 
+    const handleLogout = () => {
+        dispatch(logout())
+        navigate('/')
+    }
+
     return (
         <>
             <Box
@@ -107,12 +118,23 @@ function Header() {
                 <Box display="flex" gap="10px">
                     <Menu>
                         <MenuButton as={Button} background="white">
-                            <FaBell style={{ fontSize: '20px' }} />
+                            <FaBell style={{ fontSize: '20px' }} color={notification.length ? 'red' : ''} />
                         </MenuButton>
-                        <MenuList>
-                            <MenuItem>My profile</MenuItem>
-                            <MenuDivider />
-                            <MenuItem>Log out</MenuItem>
+                        <MenuList pl="2">
+                            {!notification.length && 'No New Messages'}
+                            {notification.map((notif) => (
+                                <MenuItem
+                                    key={notif._id}
+                                    onClick={() => {
+                                        // dispatch(addNotification(notification.filter((n) => n !== notif)))
+                                        dispatch(setChat(notif.chat))
+                                    }}
+                                >
+                                    {notif.chat.isGroupChat
+                                        ? `New Message in ${notif.chat.chatName}`
+                                        : `New Message from ${getSender(user, notif.chat.users)}`}
+                                </MenuItem>
+                            ))}
                         </MenuList>
                     </Menu>
                     <Menu>
@@ -124,7 +146,7 @@ function Header() {
                                 <MenuItem>My profile</MenuItem>
                             </ProfileModal>
                             <MenuDivider />
-                            <MenuItem>Log out</MenuItem>
+                            <MenuItem onClick={handleLogout}>Log out</MenuItem>
                         </MenuList>
                     </Menu>
                 </Box>

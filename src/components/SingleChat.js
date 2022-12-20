@@ -9,17 +9,22 @@ import ProfileModal from './ProfileModal'
 import UpdateGroupChatModal from './UpdateGroupChatModal'
 import ScrollableChat from './ScrollableChat'
 import { fetchAgainChat, setChat } from '../redux/chatSlice'
-import { authSelector, chatSelector } from '../redux/selector'
+import { authSelector, chatSelector, notificationSelector } from '../redux/selector'
 import { getSender, getSenderFull } from '../utils/chatLogics'
 import messageService from '../services/messageService'
 import { fetchAgainMess, resetFetchAgainMess } from '../redux/messageSlice'
+import { addNotification } from '../redux/notificationSlice'
 
-const ENDPOINT = 'http://localhost:5001' // "https://talk-a-tive.herokuapp.com"; -> After deployment
+// const ENDPOINT = 'http://localhost:5001' // "https://talk-a-tive.herokuapp.com"; -> After deployment
+// const ENDPOINT = 'https://chat-app-hvt.herokuapp.com' // "https://talk-a-tive.herokuapp.com"; -> After deployment
+const ENDPOINT = 'https://chat-app-server-thv.up.railway.app' // "https://talk-a-tive.herokuapp.com"; -> After deployment
+
 let socket, selectedChatCompare
 
 function SingleChat() {
-    const { chat, isFetchAgainMess } = useSelector(chatSelector)
+    const { chat } = useSelector(chatSelector)
     const { user } = useSelector(authSelector)
+    const { notification } = useSelector(notificationSelector)
 
     const [loading, setLoading] = useState(false)
     const [typing, setTyping] = useState(false)
@@ -31,9 +36,11 @@ function SingleChat() {
     const dispatch = useDispatch()
 
     const fetchMessage = async () => {
-        const data = await messageService.getAllMessages(chat._id, user.token)
-        setMessages(data)
-        socket.emit('join chat', chat._id)
+        if (Object.keys(chat).length) {
+            const data = await messageService.getAllMessages(chat._id, user.token)
+            setMessages(data)
+            socket.emit('join chat', chat._id)
+        }
     }
 
     const sendMessage = async (e) => {
@@ -95,13 +102,14 @@ function SingleChat() {
         socket.on('message recieved', (newMessageRecieved) => {
             if (
                 !selectedChatCompare || // if chat is not selected or doesn't match current chat
-                selectedChatCompare._id !== newMessageRecieved.chat._id
+                selectedChatCompare?._id !== newMessageRecieved.chat._id
             ) {
-                // if (!notification.includes(newMessageRecieved)) {
-                //   setNotification([newMessageRecieved, ...notification]);
-                //   setFetchAgain(!fetchAgain);
-                // }
+                if (!notification.includes(newMessageRecieved)) {
+                    dispatch(addNotification(newMessageRecieved))
+                    // dispatch(fetchAgainChat())
+                }
             } else {
+                console.log('ko o')
                 setMessages([...messages, newMessageRecieved])
             }
         })
